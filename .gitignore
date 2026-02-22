@@ -1,0 +1,5 @@
+node_modules/      ← npm install generates this
+.byte-cli/         ← user's pet save data (on their machine)
+dist/              ← python build artifacts
+*.egg-info/        ← python build artifacts
+*.egg              ← python
