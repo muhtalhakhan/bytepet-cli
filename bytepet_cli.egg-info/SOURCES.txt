@@ -1,0 +1,7 @@
+README.md
+pyproject.toml
+bytepet_cli.egg-info/PKG-INFO
+bytepet_cli.egg-info/SOURCES.txt
+bytepet_cli.egg-info/dependency_links.txt
+bytepet_cli.egg-info/entry_points.txt
+bytepet_cli.egg-info/top_level.txt

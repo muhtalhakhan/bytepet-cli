@@ -3,3 +3,5 @@ node_modules/      ← npm install generates this
 dist/              ← python build artifacts
 *.egg-info/        ← python build artifacts
 *.egg              ← python
+
+video/node_modules/

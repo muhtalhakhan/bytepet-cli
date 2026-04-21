@@ -74,4 +74,4 @@ Your pet's ASCII art changes based on its mood:
 
 ## License
 
-UNLICENSED — © 2025 Muhammad Talha Khan
+LICENSED — © 2026 Muhammad Talha Khan

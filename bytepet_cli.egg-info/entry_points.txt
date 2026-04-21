@@ -1,0 +1,2 @@
+[console_scripts]
+bytepet = bytepet_cli.main:main
