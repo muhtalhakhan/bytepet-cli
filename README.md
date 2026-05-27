@@ -2,7 +2,7 @@
 
 > A tiny terminal pet for your command line: feed it, play with it, let it sleep, and watch its mood change over time.
 
-[Watch the promo video](video/out/BytepetVideo.mp4)
+[![Watch the video](video/out/BytepetVideo.mp4)](video/out/BytepetVideo.mp4)
 
 ```text
   /\_____/\  
