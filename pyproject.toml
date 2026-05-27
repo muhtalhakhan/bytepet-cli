@@ -7,7 +7,7 @@ name = "bytepet-cli"
 version = "0.1.0"
 description = "⚡ A terminal pet that lives in your CLI — feed it, play with it, watch it grow"
 readme = "README.md"
-license = { text = "Proprietary" }
+license = { text = "MIT" }
 requires-python = ">=3.8"
 keywords = ["cli", "pet", "tamagotchi", "terminal", "ascii", "fun", "game", "developer"]
 classifiers = [
