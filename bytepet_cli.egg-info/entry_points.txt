@@ -1,2 +1,3 @@
 [console_scripts]
+byte = bytepet_cli.main:main
 bytepet = bytepet_cli.main:main

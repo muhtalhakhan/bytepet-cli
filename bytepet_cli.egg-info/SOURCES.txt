@@ -1,7 +1,15 @@
+LICENSE
 README.md
 pyproject.toml
+bytepet_cli/__init__.py
+bytepet_cli/main.py
 bytepet_cli.egg-info/PKG-INFO
 bytepet_cli.egg-info/SOURCES.txt
 bytepet_cli.egg-info/dependency_links.txt
 bytepet_cli.egg-info/entry_points.txt
 bytepet_cli.egg-info/top_level.txt
+bytepet_cli/bin/byte.js
+bytepet_cli/js/bin/byte.js
+bytepet_cli/js/lib/pets.js
+bytepet_cli/js/lib/rps.js
+bytepet_cli/js/lib/state.js

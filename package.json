@@ -1,11 +1,18 @@
 {
   "name": "bytepet-cli",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "⚡ A terminal pet that lives in your CLI — feed it, play with it, watch it grow",
   "main": "bin/byte.js",
   "bin": {
-    "bytepet": "./bin/byte.js"
+    "byte": "bin/byte.js",
+    "bytepet": "bin/byte.js"
   },
+  "files": [
+    "bin/",
+    "lib/",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
     "start": "node bin/byte.js"
   },
@@ -20,14 +27,14 @@
     "developer"
   ],
   "author": "Muhammad Talha Khan",
-  "license": "MIT"
+  "license": "MIT",
   "private": false,
   "engines": {
     "node": ">=14"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/muhtalhakhan/bytepet-cli.git"
+    "url": "git+https://github.com/muhtalhakhan/bytepet-cli.git"
   },
   "homepage": "https://github.com/muhtalhakhan/bytepet-cli#readme",
   "bugs": {

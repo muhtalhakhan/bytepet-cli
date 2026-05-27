@@ -1,17 +1,19 @@
-# ⚡ bytepet-cli
+# bytepet-cli
 
-> A terminal pet that lives in your CLI — feed it, play with it, watch it grow.
+> A tiny terminal pet for your command line: feed it, play with it, let it sleep, and watch its mood change over time.
 
-```
+[Watch the promo video](video/out/BytepetVideo.mp4)
+
+```text
   /\_____/\  
  (  ^   ^  ) 
  (  =^.^=  )        Pixel the Cat
- (--m-m----)        Level 3 · 45/300 XP
+ (--m-m----)        Level 3 · 245/300 XP
 
-  ❤️  Health    ██████████  100%
-  🍖  Hunger    ███████░░░  70%
-  😊  Happiness ████████░░  80%
-  ⚡  Energy    █████░░░░░  50%
+  Health     ██████████  100%
+  Hunger     ███████░░░  70%
+  Happiness  ████████░░  80%
+  Energy     █████░░░░░  55%
 
   [f] Feed   [p] Play   [s] Sleep   [q] Quit
 ```
@@ -22,56 +24,67 @@
 npm install -g bytepet-cli
 ```
 
-## Usage
+You can also install from PyPI if you prefer Python tooling:
+
+```bash
+pip install bytepet-cli
+```
+
+The PyPI package runs the same Node-powered terminal game, so Node.js still needs to be available on your machine.
+
+## Run
 
 ```bash
 byte
 ```
 
-That's it. Your pet remembers you between sessions — stats decay while you're away, so check in often!
+The npm package also exposes:
 
-## Pets
+```bash
+bytepet
+```
 
-Choose from three pets on first run:
-- 🐱 **Cat** — curious and independent
-- 🐶 **Dog** — loyal and energetic  
-- 🐉 **Dragon** — rare and mysterious
+## What You Can Do
 
-## Stats
+Bytepet is built around quick keyboard actions:
 
-| Stat | Description |
-|------|-------------|
-| ❤️ Health | Drops if hunger or happiness hits 0 |
-| 🍖 Hunger | Decays over time — feed your pet! |
-| 😊 Happiness | Decays over time — play with your pet! |
-| ⚡ Energy | Decays over time — let your pet sleep! |
-| ⭐ XP / Level | Earned through feeding, playing, sleeping |
+| Key | Action | Effect |
+| --- | --- | --- |
+| `f` | Feed | Hunger +30, happiness +5, XP +10 |
+| `s` | Sleep | Energy +40, health +5, XP +5 |
+| `p` | Play | Rock Paper Scissors, XP +5 to +15 |
+| `q` | Quit | Save and leave your pet for later |
 
-## Actions
+Your pet remembers you between sessions. Stats decay while you are away, so the next visit may find them hungry, tired, sad, or in need of care.
 
-| Key | Action | XP |
-|-----|--------|----|
-| `f` | Feed your pet | +10 XP |
-| `p` | Play Rock Paper Scissors | +5–15 XP |
-| `s` | Put your pet to sleep | +5 XP |
-| `q` | Quit | — |
+## Pets And Moods
 
-## Moods
+On first run, choose a cat, dog, or dragon and give it a name. Each pet has ASCII-art mood states driven by its stats:
 
-Your pet's ASCII art changes based on its mood:
-- 😊 **Happy** — all stats healthy
-- 🍖 **Hungry** — hunger below 20%
-- 😴 **Sleepy** — energy below 20%
-- 😢 **Sad** — happiness below 30%
-- 🤒 **Sick** — health below 20%
+| Mood | Trigger |
+| --- | --- |
+| Happy | Stats are healthy |
+| Hungry | Hunger is low |
+| Sleepy | Energy is low |
+| Sad | Happiness is low |
+| Sick | Health is low |
 
-## Roadmap
+## Progression
 
-- v0.1.0 — ✅ Core pet, 3 animals, 5 stats, RPS mini game
-- v0.2.0 — More mini games, pet evolution stages, rare pets
-- v0.3.0 — Pet accessories, backgrounds, seasonal events
-- v1.0.0 — Pro tier: multiple pets, cloud sync, pet sharing
+Feeding, sleeping, and playing all grant XP. Earn enough XP and your pet levels up, giving the little CLI companion a reason to keep living rent-free in your terminal.
+
+## Promo Video
+
+The `video/` folder contains the Remotion project used to render the promo:
+
+```bash
+cd video
+npm install
+npm run render
+```
+
+The rendered output lives at `video/out/BytepetVideo.mp4`.
 
 ## License
 
-LICENSED — © 2026 Muhammad Talha Khan
+MIT - Copyright (c) 2026 Muhammad Talha Khan

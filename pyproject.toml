@@ -4,24 +4,30 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "bytepet-cli"
-version = "0.1.0"
+version = "0.1.1"
 description = "⚡ A terminal pet that lives in your CLI — feed it, play with it, watch it grow"
 readme = "README.md"
-license = { text = "MIT" }
+license = "MIT"
 requires-python = ">=3.8"
 keywords = ["cli", "pet", "tamagotchi", "terminal", "ascii", "fun", "game", "developer"]
 classifiers = [
     "Programming Language :: Python :: 3",
     "Operating System :: OS Independent",
     "Environment :: Console",
-    "Topic :: Games/Entertainment",
-    "License :: OSI Approved :: MIT License"
+    "Topic :: Games/Entertainment"
 ]
 
 [project.scripts]
+byte = "bytepet_cli.main:main"
 bytepet = "bytepet_cli.main:main"
 
 [project.urls]
 Homepage = "https://github.com/muhtalhakhan/bytepet-cli"
 Repository = "https://github.com/muhtalhakhan/bytepet-cli"
 Issues = "https://github.com/muhtalhakhan/bytepet-cli/issues"
+
+[tool.setuptools.packages.find]
+include = ["bytepet_cli*"]
+
+[tool.setuptools.package-data]
+bytepet_cli = ["bin/*.js", "js/bin/*.js", "js/lib/*.js"]
