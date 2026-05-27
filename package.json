@@ -20,7 +20,7 @@
     "developer"
   ],
   "author": "Muhammad Talha Khan",
-  "license": "UNLICENSED",
+  "license": "MIT"
   "private": false,
   "engines": {
     "node": ">=14"
