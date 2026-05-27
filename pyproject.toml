@@ -15,6 +15,7 @@ classifiers = [
     "Operating System :: OS Independent",
     "Environment :: Console",
     "Topic :: Games/Entertainment",
+    "License :: OSI Approved :: MIT License"
 ]
 
 [project.scripts]
