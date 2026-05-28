@@ -1,6 +1,6 @@
 {
   "name": "bytepet-cli",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "⚡ A terminal pet that lives in your CLI — feed it, play with it, watch it grow",
   "main": "bin/byte.js",
   "bin": {

@@ -6,6 +6,7 @@ const os = require('os');
 
 const STATE_DIR = path.join(os.homedir(), '.byte-cli');
 const STATE_FILE = path.join(STATE_DIR, 'pet.json');
+const STAT_NAMES = ['hunger', 'happiness', 'energy', 'health', 'xp', 'level'];
 
 const DECAY_RATES = {
   hunger:    0.8,   // per hour
@@ -20,19 +21,77 @@ function ensureDir() {
   }
 }
 
-function load() {
-  ensureDir();
-  if (!fs.existsSync(STATE_FILE)) return null;
-  try {
-    return JSON.parse(fs.readFileSync(STATE_FILE, 'utf8'));
-  } catch {
-    return null;
+function backupCorruptSave() {
+  const stamp = new Date().toISOString().replace(/[:.]/g, '-');
+  const backupFile = path.join(STATE_DIR, `pet.corrupt-${stamp}.json`);
+  fs.renameSync(STATE_FILE, backupFile);
+  return backupFile;
+}
+
+function clampStat(value, min = 0, max = 100) {
+  const number = Number(value);
+  if (!Number.isFinite(number)) return min;
+  return Math.max(min, Math.min(max, number));
+}
+
+function normalizeState(raw) {
+  if (!raw || typeof raw !== 'object') return null;
+  if (!raw.name || typeof raw.name !== 'string') return null;
+  if (!PETS_TYPES().includes(raw.petType)) return null;
+  if (!raw.stats || typeof raw.stats !== 'object') return null;
+
+  for (const stat of STAT_NAMES) {
+    if (!Number.isFinite(Number(raw.stats[stat]))) return null;
   }
+
+  return {
+    ...raw,
+    stats: {
+      hunger: clampStat(raw.stats.hunger),
+      happiness: clampStat(raw.stats.happiness),
+      energy: clampStat(raw.stats.energy),
+      health: clampStat(raw.stats.health),
+      xp: Math.max(0, Math.floor(Number(raw.stats.xp))),
+      level: Math.max(1, Math.floor(Number(raw.stats.level))),
+    },
+    lastSeen: Number.isFinite(Number(raw.lastSeen)) ? Number(raw.lastSeen) : Date.now(),
+    born: Number.isFinite(Number(raw.born)) ? Number(raw.born) : Date.now(),
+  };
+}
+
+function PETS_TYPES() {
+  return ['cat', 'dog', 'dragon'];
+}
+
+function loadWithMeta() {
+  ensureDir();
+  if (!fs.existsSync(STATE_FILE)) return { state: null, recovered: false, backupFile: null };
+
+  try {
+    const state = normalizeState(JSON.parse(fs.readFileSync(STATE_FILE, 'utf8')));
+    if (state) return { state, recovered: false, backupFile: null };
+  } catch {
+    // Fall through to quarantine the unreadable save file.
+  }
+
+  const backupFile = backupCorruptSave();
+  return { state: null, recovered: true, backupFile };
+}
+
+function load() {
+  return loadWithMeta().state;
 }
 
 function save(state) {
   ensureDir();
   fs.writeFileSync(STATE_FILE, JSON.stringify(state, null, 2));
+}
+
+function reset() {
+  ensureDir();
+  if (!fs.existsSync(STATE_FILE)) return false;
+  fs.unlinkSync(STATE_FILE);
+  return true;
 }
 
 function applyDecay(state) {
@@ -86,4 +145,14 @@ function addXP(state, amount) {
   return { state: newState, leveledUp: false };
 }
 
-module.exports = { load, save, applyDecay, createPet, addXP };
+module.exports = {
+  STATE_DIR,
+  STATE_FILE,
+  load,
+  loadWithMeta,
+  save,
+  reset,
+  applyDecay,
+  createPet,
+  addXP,
+};

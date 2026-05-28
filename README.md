@@ -49,6 +49,8 @@ Helpful flags:
 ```bash
 byte --help
 byte --version
+byte --status
+byte --reset
 ```
 
 ## What You Can Do
@@ -63,6 +65,18 @@ Bytepet is built around quick keyboard actions:
 | `q` | Quit | Save and leave your pet for later |
 
 Your pet remembers you between sessions. Stats decay while you are away, so the next visit may find them hungry, tired, sad, or in need of care.
+
+## Save Management
+
+`byte --status` prints your current pet stats without opening the interactive UI. `byte --reset` deletes your saved pet so you can adopt a new one on the next run.
+
+Bytepet stores your pet locally in:
+
+```text
+~/.byte-cli/pet.json
+```
+
+If the save file becomes unreadable, bytepet moves it aside as a `.corrupt-...json` backup and lets you adopt a fresh pet.
 
 ## Pets And Moods
 

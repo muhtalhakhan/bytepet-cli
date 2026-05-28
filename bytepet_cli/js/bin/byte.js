@@ -4,11 +4,19 @@
 
 const readline = require('readline');
 const { PETS, getMood, getArt } = require('../lib/pets');
-const { load, save, applyDecay, createPet, addXP } = require('../lib/state');
+const {
+  STATE_FILE,
+  loadWithMeta,
+  save,
+  reset,
+  applyDecay,
+  createPet,
+  addXP,
+} = require('../lib/state');
 const rps = require('../lib/rps');
 
 const APP_NAME = 'bytepet-cli';
-const VERSION = '0.1.2';
+const VERSION = '0.2.0';
 
 // ── Colors ───────────────────────────────────────────────────────────────────
 const c = {
@@ -38,30 +46,93 @@ Usage:
 Options:
   -h, --help       Show this help message
   -v, --version    Show the current version
+  --status         Print your pet's current status and exit
+  --reset          Delete your saved pet and start over next run
+  -y, --yes        Skip confirmation prompts
 
 Controls:
   f    Feed your pet
   p    Play Rock Paper Scissors
   s    Let your pet sleep
   q    Save and quit
+
+Save file:
+  ${STATE_FILE}
 `);
 }
 
-function handleCliArgs(argv) {
-  const arg = argv[2];
-  if (!arg) return false;
+async function confirmReset() {
+  if (!process.stdin.isTTY) return false;
 
-  if (arg === '-h' || arg === '--help') {
+  const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
+  const answer = await ask(rl, 'Delete your saved pet? This cannot be undone. [y/N] ');
+  rl.close();
+  return answer.toLowerCase() === 'y' || answer.toLowerCase() === 'yes';
+}
+
+function printSaveWarning(meta) {
+  if (!meta.recovered) return;
+  console.error(`Save file was unreadable and has been moved to: ${meta.backupFile}`);
+}
+
+function printStatus(state) {
+  const mood = getMood(state.stats);
+  const xpNeeded = state.stats.level * 100;
+
+  console.log(`${state.name} the ${PETS[state.petType].name}`);
+  console.log(`Mood: ${mood}`);
+  console.log(`Level: ${state.stats.level}`);
+  console.log(`XP: ${state.stats.xp}/${xpNeeded}`);
+  console.log(`Health: ${Math.round(state.stats.health)}%`);
+  console.log(`Hunger: ${Math.round(state.stats.hunger)}%`);
+  console.log(`Happiness: ${Math.round(state.stats.happiness)}%`);
+  console.log(`Energy: ${Math.round(state.stats.energy)}%`);
+  console.log(`Save file: ${STATE_FILE}`);
+}
+
+async function handleCliArgs(argv) {
+  const args = argv.slice(2);
+  if (args.length === 0) return false;
+
+  if (args.includes('-h') || args.includes('--help')) {
     printHelp();
     return true;
   }
 
-  if (arg === '-v' || arg === '--version') {
+  if (args.includes('-v') || args.includes('--version')) {
     console.log(VERSION);
     return true;
   }
 
-  console.error(`Unknown option: ${arg}`);
+  if (args.includes('--status')) {
+    const meta = loadWithMeta();
+    printSaveWarning(meta);
+    if (!meta.state) {
+      console.log(`No pet found. Run "byte" to adopt one.`);
+      console.log(`Save file: ${STATE_FILE}`);
+      return true;
+    }
+
+    const state = applyDecay(meta.state);
+    save(state);
+    printStatus(state);
+    return true;
+  }
+
+  if (args.includes('--reset')) {
+    const force = args.includes('-y') || args.includes('--yes');
+    if (!force && !(await confirmReset())) {
+      console.log('Reset cancelled.');
+      return true;
+    }
+
+    const removed = reset();
+    console.log(removed ? 'Saved pet deleted. Run "byte" to adopt a new one.' : 'No saved pet found.');
+    console.log(`Save file: ${STATE_FILE}`);
+    return true;
+  }
+
+  console.error(`Unknown option: ${args[0]}`);
   console.error(`Run "byte --help" for usage.`);
   process.exitCode = 1;
   return true;
@@ -191,7 +262,9 @@ function sleep(state) {
 
 // ── Main loop ─────────────────────────────────────────────────────────────────
 async function main() {
-  let state = load();
+  const meta = loadWithMeta();
+  printSaveWarning(meta);
+  let state = meta.state;
 
   if (!state) {
     state = await onboard();
@@ -284,9 +357,14 @@ async function main() {
   });
 }
 
-if (!handleCliArgs(process.argv)) {
+handleCliArgs(process.argv).then(handled => {
+  if (handled) return;
+
   main().catch(err => {
     console.error('Error:', err.message);
     process.exit(1);
   });
-}
+}).catch(err => {
+  console.error('Error:', err.message);
+  process.exit(1);
+});
