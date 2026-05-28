@@ -64,7 +64,7 @@ export const SceneReveal: React.FC = () => {
                 fontWeight: 700,
               }}
             >
-              ⚡ byte-cli
+              ⚡ bytepet-cli
             </span>
           </div>
 

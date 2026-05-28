@@ -44,6 +44,13 @@ The npm package also exposes:
 bytepet
 ```
 
+Helpful flags:
+
+```bash
+byte --help
+byte --version
+```
+
 ## What You Can Do
 
 Bytepet is built around quick keyboard actions:

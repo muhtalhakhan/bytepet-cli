@@ -1,6 +1,6 @@
 Metadata-Version: 2.4
 Name: bytepet-cli
-Version: 0.1.1
+Version: 0.1.2
 Summary: ⚡ A terminal pet that lives in your CLI — feed it, play with it, watch it grow
 License-Expression: MIT
 Project-URL: Homepage, https://github.com/muhtalhakhan/bytepet-cli
@@ -20,7 +20,7 @@ Dynamic: license-file
 
 > A tiny terminal pet for your command line: feed it, play with it, let it sleep, and watch its mood change over time.
 
-[Watch the promo video](video/out/BytepetVideo.mp4)
+[![Watch bytepet-cli demo](https://cdn.jsdelivr.net/gh/muhtalhakhan/bytepet-cli@main/video/thumbnail.png)](https://github.com/muhtalhakhan/bytepet-cli/releases/download/v0.1.1/BytepetVideo.mp4)
 
 ```text
   /\_____/\  
@@ -60,6 +60,13 @@ The npm package also exposes:
 
 ```bash
 bytepet
+```
+
+Helpful flags:
+
+```bash
+byte --help
+byte --version
 ```
 
 ## What You Can Do

@@ -7,6 +7,9 @@ const { PETS, getMood, getArt } = require('../lib/pets');
 const { load, save, applyDecay, createPet, addXP } = require('../lib/state');
 const rps = require('../lib/rps');
 
+const APP_NAME = 'bytepet-cli';
+const VERSION = '0.1.2';
+
 // ── Colors ───────────────────────────────────────────────────────────────────
 const c = {
   reset:   '\x1b[0m',
@@ -23,6 +26,46 @@ const c = {
 };
 
 const paint = (color, text) => `${color}${text}${c.reset}`;
+
+function printHelp() {
+  console.log(`
+${APP_NAME} v${VERSION}
+
+Usage:
+  byte
+  bytepet
+
+Options:
+  -h, --help       Show this help message
+  -v, --version    Show the current version
+
+Controls:
+  f    Feed your pet
+  p    Play Rock Paper Scissors
+  s    Let your pet sleep
+  q    Save and quit
+`);
+}
+
+function handleCliArgs(argv) {
+  const arg = argv[2];
+  if (!arg) return false;
+
+  if (arg === '-h' || arg === '--help') {
+    printHelp();
+    return true;
+  }
+
+  if (arg === '-v' || arg === '--version') {
+    console.log(VERSION);
+    return true;
+  }
+
+  console.error(`Unknown option: ${arg}`);
+  console.error(`Run "byte --help" for usage.`);
+  process.exitCode = 1;
+  return true;
+}
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 function bar(value, max = 100, len = 10) {
@@ -57,7 +100,7 @@ async function onboard() {
 
   clearScreen();
   console.log('');
-  console.log(paint(c.bold + c.cyan, '  🥚  Welcome to byte-cli!'));
+  console.log(paint(c.bold + c.cyan, `  🥚  Welcome to ${APP_NAME}!`));
   console.log(paint(c.gray, '  Your terminal pet is waiting...\n'));
 
   console.log(paint(c.bold, '  Choose your pet:\n'));
@@ -101,7 +144,7 @@ function renderHome(state) {
 
   clearScreen();
   console.log('');
-  console.log(paint(c.bold + c.cyan, '  ⚡ byte-cli\n'));
+  console.log(paint(c.bold + c.cyan, `  ⚡ ${APP_NAME}\n`));
 
   // ASCII art
   art.forEach(line => console.log(paint(c.yellow, '  ' + line)));
@@ -241,7 +284,9 @@ async function main() {
   });
 }
 
-main().catch(err => {
-  console.error('Error:', err.message);
-  process.exit(1);
-});
+if (!handleCliArgs(process.argv)) {
+  main().catch(err => {
+    console.error('Error:', err.message);
+    process.exit(1);
+  });
+}
