@@ -2,7 +2,7 @@
 
 > A tiny terminal pet for your command line: feed it, play with it, let it sleep, and watch its mood change over time.
 
-[Watch the promo video](video/out/BytepetVideo.mp4)
+[![Watch bytepet-cli demo](https://cdn.jsdelivr.net/gh/muhtalhakhan/bytepet-cli@main/video/thumbnail.png)](https://github.com/muhtalhakhan/bytepet-cli/releases/download/v0.1.1/BytepetVideo.mp4)
 
 ```text
   /\_____/\  
